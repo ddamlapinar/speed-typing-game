@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useRef } from 'react'
 import './styles.css';
 
 function App() {
@@ -6,24 +6,27 @@ function App() {
   const STARTING_TIME = 15;
 
   const [text, setText] = useState("");
-  const [timeRemaining, setTimeRemaining] = useState(STARTING_TIME)
-  const [isTimeRunning, setIsTimeRunning] = useState(false)
-  const [wordCount, setWordCount] = useState(0)
+  const [timeRemaining, setTimeRemaining] = useState(STARTING_TIME);
+  const [isTimeRunning, setIsTimeRunning] = useState(false);
+  const [wordCount, setWordCount] = useState(0);
+  const textareaRef=useRef(null);
 
   function handleChange(e) {
     const { value } = e.target
     setText(value)
   }
   function calculateWordCount(text) {
-    const wordsArr = text.trim().split(" ")
-    console.log(wordsArr.filter(word => word !== "").length)
-    return wordsArr.filter(word => word !== "").length
+    const wordsArr = text.trim().split(" ");
+    console.log(wordsArr.filter(word => word !== "").length);
+    return wordsArr.filter(word => word !== "").length;
   }
 
   function startGame() {
     setIsTimeRunning(true);
     setTimeRemaining(STARTING_TIME);
-    setText("")
+    setText("");
+    textareaRef.current.disabled=false;
+    textareaRef.current.focus();
   }
   function endGame() {
     setIsTimeRunning(false)
@@ -51,6 +54,7 @@ function App() {
 
       <h1>How fast do you type?</h1>
       <textarea
+        ref={textareaRef}
         onChange={handleChange}
         value={text}
         disabled={!isTimeRunning}
